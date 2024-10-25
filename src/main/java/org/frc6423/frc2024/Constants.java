@@ -20,14 +20,14 @@ public class Constants {
         public static final int kPivotMotorCurrentLimit = 30;
         public static final int kDriveMotorCurrentLimit = 50; // !
 
-        public static final double kPivotReduction = 1;
-        public static final double kDriveReduction = 1;
+        public static final double kPivotReduction = 6.5;
+        public static final double kDriveReduction = 150.0 / 7.0;
 
-        public static final double kModulePivotP = 0.01;
+        public static final double kModulePivotP = 10.0;
         public static final double kModulePivotI = 0;
         public static final double kModulePivotD = 0;
 
-        public static final double kModuleDriveP = 0.005;
+        public static final double kModuleDriveP = 0.1;
         public static final double kModuleDriveI = 0;
         public static final double kModuleDriveD = 0;
 

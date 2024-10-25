@@ -38,6 +38,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
   // * ------ SUBSYSTEMS ------
@@ -45,7 +46,7 @@ public class RobotContainer {
   private final Drive drive;
 
   // * ------ COMMANDS ------
-  private final IronController driveController = new IronController(0, 0.025, 0);
+  private final CommandXboxController driveController = new CommandXboxController(0);
 
   // * ------ AUTO (womp womp) ------
   private final LoggedDashboardChooser<Command> autoChooser;
@@ -56,7 +57,7 @@ public class RobotContainer {
 
     if (Robot.isReal()) {
       drive = new Drive(
-        new GyroIONavX(), 
+        new GyroIONavX() {}, 
         new ModuleIONeo(
           FRONTLEFT_PIVOT,
           FRONTLEFT_DRIVE,
@@ -92,24 +93,26 @@ public class RobotContainer {
       );
     } else {
       drive = new Drive(
-        new GyroIOSim(), 
-        new ModuleIOSim(), 
-        new ModuleIOSim(), 
-        new ModuleIOSim(), 
-        new ModuleIOSim() 
+        new GyroIOSim() {}, 
+        new ModuleIOSim() {}, 
+        new ModuleIOSim()  {}, 
+        new ModuleIOSim() {}, 
+        new ModuleIOSim() {}
       );
     }
 
     autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+
+    configureButtonBindings();
 
   }
 
   private void configureButtonBindings() {
     drive.setDefaultCommand(
         DriveCommands.joystickDrive(drive,
-        () -> -driveController.getLeftY(), 
-        () -> -driveController.getLeftX(), 
-        () -> -driveController.getRightX()
+        () -> driveController.getLeftY(), 
+        () -> driveController.getLeftX(), 
+        () -> driveController.getRightX()
         )
     );
     driveController.x().onTrue(Commands.runOnce(drive::stopWithX, drive));

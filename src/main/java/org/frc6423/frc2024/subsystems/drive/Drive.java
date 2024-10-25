@@ -39,7 +39,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 public class Drive extends SubsystemBase {
 
-    private final Lock odometryLock = new ReentrantLock();
     private final GyroIO gyroIO;
     private final GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
     private final Module[] modules = new Module[4];

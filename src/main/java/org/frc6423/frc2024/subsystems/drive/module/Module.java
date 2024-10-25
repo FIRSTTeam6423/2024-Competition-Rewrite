@@ -82,10 +82,6 @@ public class Module {
 
     }
 
-    public void updateInputs() {
-        io.updateInputs(inputs);
-    }
-
     public SwerveModuleState runSetpoint(SwerveModuleState state) {
         
         var optimizedState = SwerveModuleState.optimize(state, getAngle());
