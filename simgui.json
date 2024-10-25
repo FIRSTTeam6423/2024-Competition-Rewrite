@@ -5,6 +5,11 @@
       "/SmartDashboard/Auto Choices": "String Chooser"
     },
     "windows": {
+      "/FMSInfo": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Auto Choices": {
         "window": {
           "visible": true
