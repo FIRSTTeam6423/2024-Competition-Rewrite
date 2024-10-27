@@ -38,6 +38,8 @@ import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -51,47 +53,18 @@ public class RobotContainer {
   private final CommandXboxController driveController = new CommandXboxController(0);
 
   // * ------ AUTO (womp womp) ------
-  private final LoggedDashboardChooser<Command> autoChooser;
+  private final SendableChooser<Command> autoChooser;
 
   // * ------ CONTROLLERS ------
   public RobotContainer() {
 
-
     if (Robot.isReal()) {
       drive = new Drive(
         new GyroIONavX() {}, 
-        new ModuleIONeo(
-          FRONTLEFT_PIVOT,
-          FRONTLEFT_DRIVE,
-          FRONTLEFT_ABS_ENCODER,
-          FRONTLEFT_ABS_ENCODER_OFFSET, 
-          true, 
-          false
-        ), 
-        new ModuleIONeo(
-          FRONTRIGHT_PIVOT,
-          FRONTRIGHT_DRIVE,
-          FRONTRIGHT_ABS_ENCODER,
-          FRONTRIGHT_ABS_ENCODER_OFFSET, 
-          true, 
-          true
-        ), 
-        new ModuleIONeo(
-          BACKLEFT_PIVOT,
-          BACKLEFT_DRIVE,
-          BACKLEFT_ABS_ENCODER,
-          BACKLEFT_ABS_ENCODER_OFFSET, 
-          true, 
-          true
-        ), 
-        new ModuleIONeo(
-          BACKRIGHT_PIVOT,
-          BACKRIGHT_DRIVE,
-          BACKRIGHT_ABS_ENCODER,
-          BACKRIGHT_ABS_ENCODER_OFFSET, 
-          true, 
-          false
-        )
+        new ModuleIONeo(0), 
+        new ModuleIONeo(1), 
+        new ModuleIONeo(2), 
+        new ModuleIONeo(3)
       );
     } else {
       drive = new Drive(
@@ -103,7 +76,8 @@ public class RobotContainer {
       );
     }
 
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     configureButtonBindings();
 
@@ -131,6 +105,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoChooser.get();
+    return autoChooser.getSelected();
   }
+
 }

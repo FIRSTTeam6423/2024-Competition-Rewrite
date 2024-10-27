@@ -40,9 +40,15 @@ public class Module {
         this.ID = ID;
         this.io = io;
 
-        pivotPIDController = new PIDController(kModulePivotP,kModulePivotI, kModulePivotD);
-        drivePIDController = new PIDController(kModuleDriveP, kModuleDriveI, kModuleDriveD);
-        driveFeedforward = new SimpleMotorFeedforward(kDriveS, kDriveV, kDriveA);
+        if (Robot.isReal()) {
+            pivotPIDController = new PIDController(kModulePivotP,kModulePivotI, kModulePivotD);
+            drivePIDController = new PIDController(kModuleDriveP, kModuleDriveI, kModuleDriveD);
+            driveFeedforward = new SimpleMotorFeedforward(kDriveS, kDriveV, kDriveA);
+        } else {
+            pivotPIDController = new PIDController(10.0, 0.0, 0.0);
+            drivePIDController = new PIDController(0.1, 0.0, 0.0);
+            driveFeedforward = new SimpleMotorFeedforward(0.0, 0.13);
+        }
 
         pivotPIDController.enableContinuousInput(-Math.PI, Math.PI);
         io.setDriveBreakMode(IdleMode.kBrake);
@@ -119,7 +125,7 @@ public class Module {
     }
 
     public double getPositionMeters() {
-        return inputs.drivePoseRad.getRadians() * Units.inchesToMeters(2);
+        return inputs.drivePoseRad * Units.inchesToMeters(2);
     }
 
     public double getVelocityMetersPerSec() {

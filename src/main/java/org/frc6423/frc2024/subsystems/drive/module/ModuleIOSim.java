@@ -5,10 +5,8 @@ import static org.frc6423.frc2024.Constants.KDriveConstants.*;
 import com.revrobotics.CANSparkBase.IdleMode;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 public class ModuleIOSim implements ModuleIO{
@@ -18,16 +16,10 @@ public class ModuleIOSim implements ModuleIO{
     private final DCMotorSim driveSim =
         new DCMotorSim(DCMotor.getNEO(1), kDriveReduction, 0.004);
 
-    private final Rotation2d intPivot = new Rotation2d(Math.random() * 2.0 * Math.PI);
     private double driveAppliedVolts, pivotAppliedVolts;
+
+    private Rotation2d intPivot = new Rotation2d();
     
-    public ModuleIOSim() {
-
-        driveAppliedVolts = 0.0;
-        pivotAppliedVolts = 0.0;
-
-    }
-
     @Override
     public void updateInputs(ModuleIOInputs inputs) {
 
@@ -39,7 +31,7 @@ public class ModuleIOSim implements ModuleIO{
         inputs.pivotVelRadPerSec = pivotSim.getAngularVelocityRadPerSec();
         inputs.pivotAppliedVolts = pivotAppliedVolts;
 
-        inputs.drivePoseRad = Rotation2d.fromRadians(driveSim.getAngularPositionRad());
+        inputs.drivePoseRad = driveSim.getAngularPositionRad();
         inputs.driveVelRadPerSec = driveSim.getAngularVelocityRadPerSec();
         inputs.driveAppliedVolts = this.driveAppliedVolts;
 
@@ -58,18 +50,15 @@ public class ModuleIOSim implements ModuleIO{
         driveSim.setInputVoltage(driveAppliedVolts);
 
     }
+
     @Override
     public void setPivotBreakMode(IdleMode mode) {
 
     }
+
     @Override
     public void setDriveBreakMode(IdleMode mode) {
 
     }
 
-    public void stop() {
-        setDriveVoltage(0);
-        setPivotVoltage(0);
-    }
-    
 }

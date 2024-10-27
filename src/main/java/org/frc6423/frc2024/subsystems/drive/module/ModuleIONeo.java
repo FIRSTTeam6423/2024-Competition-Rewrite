@@ -1,10 +1,6 @@
 package org.frc6423.frc2024.subsystems.drive.module;
 
-import static org.frc6423.frc2024.Constants.KDriveConstants.kDriveGearRatio;
-import static org.frc6423.frc2024.Constants.KDriveConstants.kDriveMotorCurrentLimit;
-import static org.frc6423.frc2024.Constants.KDriveConstants.kDriveReduction;
-import static org.frc6423.frc2024.Constants.KDriveConstants.kPivotGearRatio;
-import static org.frc6423.frc2024.Constants.KDriveConstants.kPivotMotorCurrentLimit;
+import static org.frc6423.frc2024.Constants.KDriveConstants.*;
 
 import java.util.OptionalDouble;
 import java.util.Queue;
@@ -33,30 +29,35 @@ public class ModuleIONeo implements ModuleIO {
 
     private final Rotation2d pivotOffset;
 
-    public ModuleIONeo(int pivotMotorID, int driveMotorID, int pivotEncoderID, Rotation2d pivotOffset, boolean pivotInverted, boolean driveInverted) {
-
-        this.pivotOffset = pivotOffset;
-
-        pivotMotor = new CANSparkMax(pivotMotorID, MotorType.kBrushless);
-        driveMotor = new CANSparkMax(driveMotorID, MotorType.kBrushless);
-        // pivotMotor.setInverted(pivotInverted);
-        // pivotMotor.restoreFactoryDefaults();
-        // pivotMotor.setIdleMode(IdleMode.kBrake);
-        // pivotMotor.setSmartCurrentLimit(kPivotMotorCurrentLimit); // !
-
-        // pivotEncoder.reset();
-        // this.pivotOffset = pivotOffset;
-
-        // driveMotor.setInverted(driveInverted);
-        // driveMotor.restoreFactoryDefaults();
-        // driveMotor.setIdleMode(IdleMode.kBrake);
-        // driveMotor.setSmartCurrentLimit(DRIVE_MOTOR_CURRENT_LIMIT);
-        // driveMotor.burnFlash();
-
-        // driveRelativeEncoder.setPosition(0);
-        // driveRelativeEncoder.setPositionConversionFactor(DRIVE_ROTATIONS_TO_METERS);
-        // driveRelativeEncoder.setVelocityConversionFactor(RPM_TO_METERS_PER_SEC);
-        // driveRelativeEncoder.setMeasurementPeriod(1); // 32
+    public ModuleIONeo(int ID) {
+        switch(ID) {
+            case 0:
+                pivotMotor = new CANSparkMax(FRONTLEFT_PIVOT, MotorType.kBrushless);
+                driveMotor = new CANSparkMax(FRONTLEFT_DRIVE, MotorType.kBrushless);
+                pivotEncoder = new DutyCycleEncoder(FRONTLEFT_ABS_ENCODER);
+                this.pivotOffset = FRONTLEFT_ABS_ENCODER_OFFSET;
+                break;
+            case 1:
+                pivotMotor = new CANSparkMax(FRONTRIGHT_PIVOT, MotorType.kBrushless);
+                driveMotor = new CANSparkMax(FRONTRIGHT_DRIVE, MotorType.kBrushless);
+                pivotEncoder = new DutyCycleEncoder(FRONTRIGHT_ABS_ENCODER);
+                this.pivotOffset = FRONTRIGHT_ABS_ENCODER_OFFSET;
+                break;
+            case 2:
+                pivotMotor = new CANSparkMax(BACKLEFT_PIVOT, MotorType.kBrushless);
+                driveMotor = new CANSparkMax(BACKLEFT_DRIVE, MotorType.kBrushless);
+                pivotEncoder = new DutyCycleEncoder(BACKLEFT_ABS_ENCODER);
+                this.pivotOffset = BACKLEFT_ABS_ENCODER_OFFSET;
+                break;
+            case 3:
+                pivotMotor = new CANSparkMax(BACKLEFT_PIVOT, MotorType.kBrushless);
+                driveMotor = new CANSparkMax(BACKRIGHT_DRIVE, MotorType.kBrushless);
+                pivotEncoder = new DutyCycleEncoder(BACKLEFT_ABS_ENCODER);
+                this.pivotOffset = BACKLEFT_ABS_ENCODER_OFFSET;
+                break;
+            default:
+                throw new RuntimeException("Invalid Neo Module defined");
+        } 
 
         pivotMotor.restoreFactoryDefaults();
         driveMotor.restoreFactoryDefaults();
@@ -67,8 +68,7 @@ public class ModuleIONeo implements ModuleIO {
         pivotRelativeEncoder = pivotMotor.getEncoder();
         driveRelativeEncoder = driveMotor.getEncoder();
 
-        pivotMotor.setInverted(pivotInverted);
-        driveMotor.setInverted(driveInverted);
+        pivotMotor.setInverted(true);
         pivotMotor.setSmartCurrentLimit(kPivotMotorCurrentLimit);
         driveMotor.setSmartCurrentLimit(kDriveMotorCurrentLimit);
         pivotMotor.enableVoltageCompensation(12.0); // !
@@ -81,8 +81,6 @@ public class ModuleIONeo implements ModuleIO {
         driveRelativeEncoder.setPosition(0.0);
         driveRelativeEncoder.setMeasurementPeriod(10);
         driveRelativeEncoder.setAverageDepth(2);
-
-        pivotEncoder = new DutyCycleEncoder(pivotEncoderID);
 
         // pivotPoseQueue = 
         //     SparkMaxOdometryThread.getInstance()
@@ -120,7 +118,7 @@ public class ModuleIONeo implements ModuleIO {
         inputs.pivotVelRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(pivotRelativeEncoder.getVelocity()) / kPivotGearRatio;
         inputs.pivotAppliedVolts = pivotMotor.getAppliedOutput() * pivotMotor.getBusVoltage();
     
-        inputs.drivePoseRad = Rotation2d.fromRotations(Units.rotationsToRadians(driveRelativeEncoder.getPosition()) / kDriveGearRatio);
+        inputs.drivePoseRad = Units.rotationsToRadians(driveRelativeEncoder.getPosition()) / kDriveGearRatio;
         inputs.driveVelRadPerSec = Units.rotationsPerMinuteToRadiansPerSecond(driveRelativeEncoder.getVelocity()) / kDriveGearRatio;
         inputs.driveAppliedVolts = driveMotor.getAppliedOutput() * driveMotor.getBusVoltage();
         

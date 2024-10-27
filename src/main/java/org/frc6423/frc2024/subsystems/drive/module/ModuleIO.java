@@ -16,7 +16,7 @@ public interface ModuleIO {
         public static double pivotVelRadPerSec = 0.0;
         public static double pivotAppliedVolts = 0.0;
         
-        public static Rotation2d drivePoseRad = new Rotation2d();
+        public static double drivePoseRad = 0.0;
         public static double driveVelRadPerSec = 0.0;
         public static double driveAppliedVolts = 0.0;
 
