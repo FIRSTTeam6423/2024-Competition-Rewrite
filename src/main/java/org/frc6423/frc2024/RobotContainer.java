@@ -25,7 +25,6 @@ import org.frc6423.frc2024.commands.DriveCommands;
 import org.frc6423.frc2024.subsystems.drive.Drive;
 import org.frc6423.frc2024.subsystems.drive.gyro.GyroIO;
 import org.frc6423.frc2024.subsystems.drive.gyro.GyroIONavX;
-import org.frc6423.frc2024.subsystems.drive.gyro.GyroIOSim;
 import org.frc6423.frc2024.subsystems.drive.module.ModuleIONeo;
 import org.frc6423.frc2024.subsystems.drive.module.ModuleIOSim;
 import org.frc6423.frc2024.util.ControllerUtil;
@@ -35,6 +34,7 @@ import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 import com.fasterxml.jackson.databind.Module;
 import com.pathplanner.lib.auto.AutoBuilder;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -53,7 +53,7 @@ public class RobotContainer {
   private final CommandXboxController driveController = new CommandXboxController(0);
 
   // * ------ AUTO (womp womp) ------
-  private final SendableChooser<Command> autoChooser;
+  private final LoggedDashboardChooser<Command> autoChooser;
 
   // * ------ CONTROLLERS ------
   public RobotContainer() {
@@ -68,16 +68,25 @@ public class RobotContainer {
       );
     } else {
       drive = new Drive(
-        new GyroIOSim() {}, 
-        new ModuleIOSim() {}, 
-        new ModuleIOSim()  {}, 
-        new ModuleIOSim() {}, 
-        new ModuleIOSim() {}
+        new GyroIO() {}, 
+        new ModuleIOSim(), 
+        new ModuleIOSim(), 
+        new ModuleIOSim(), 
+        new ModuleIOSim()
       );
     }
 
-    autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Auto Chooser", autoChooser);
+    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+    autoChooser.addOption(
+        "Drive SysId (Quasistatic Forward)",
+        drive.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+    autoChooser.addOption(
+        "Drive SysId (Quasistatic Reverse)",
+        drive.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+    autoChooser.addOption(
+        "Drive SysId (Dynamic Forward)", drive.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    autoChooser.addOption(
+        "Drive SysId (Dynamic Reverse)", drive.sysIdDynamic(SysIdRoutine.Direction.kReverse));
 
     configureButtonBindings();
 
@@ -105,7 +114,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autoChooser.getSelected();
+    return autoChooser.get();
   }
 
 }

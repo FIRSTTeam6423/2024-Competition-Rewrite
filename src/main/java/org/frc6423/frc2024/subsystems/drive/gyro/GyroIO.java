@@ -18,6 +18,6 @@ public interface GyroIO {
 
     }
 
-    public void updateInputs(GyroIOInputs inputs);
+    public default void updateInputs(GyroIOInputs inputs) {};
     
 }

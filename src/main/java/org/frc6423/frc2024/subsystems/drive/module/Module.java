@@ -10,7 +10,6 @@ import static org.frc6423.frc2024.Constants.KDriveConstants.kModulePivotD;
 import static org.frc6423.frc2024.Constants.KDriveConstants.kModulePivotI;
 import static org.frc6423.frc2024.Constants.KDriveConstants.kModulePivotP;
 
-import org.frc6423.frc2024.Constants;
 import org.frc6423.frc2024.Robot;
 import org.littletonrobotics.junction.Logger;
 
@@ -45,8 +44,8 @@ public class Module {
             drivePIDController = new PIDController(kModuleDriveP, kModuleDriveI, kModuleDriveD);
             driveFeedforward = new SimpleMotorFeedforward(kDriveS, kDriveV, kDriveA);
         } else {
-            pivotPIDController = new PIDController(10.0, 0.0, 0.0);
-            drivePIDController = new PIDController(0.1, 0.0, 0.0);
+            pivotPIDController = new PIDController(0.005, 0.0, 0.0);
+            drivePIDController = new PIDController(0.01, 0.0, 0.0);
             driveFeedforward = new SimpleMotorFeedforward(0.0, 0.13);
         }
 
@@ -67,7 +66,7 @@ public class Module {
 
         if (pivotSetpoint != null) {
             io.setPivotVoltage(
-                pivotPIDController.calculate(getAngle().getRadians(), pivotSetpoint.getRadians())
+                pivotPIDController.calculate(getAngle().getDegrees(), pivotSetpoint.getDegrees())
             );
         }
 
