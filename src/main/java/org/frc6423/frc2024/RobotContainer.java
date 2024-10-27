@@ -65,7 +65,7 @@ public class RobotContainer {
           FRONTLEFT_DRIVE,
           FRONTLEFT_ABS_ENCODER,
           FRONTLEFT_ABS_ENCODER_OFFSET, 
-          false, 
+          true, 
           false
         ), 
         new ModuleIONeo(
@@ -73,23 +73,23 @@ public class RobotContainer {
           FRONTRIGHT_DRIVE,
           FRONTRIGHT_ABS_ENCODER,
           FRONTRIGHT_ABS_ENCODER_OFFSET, 
-          false, 
-          false
+          true, 
+          true
         ), 
         new ModuleIONeo(
           BACKLEFT_PIVOT,
           BACKLEFT_DRIVE,
           BACKLEFT_ABS_ENCODER,
           BACKLEFT_ABS_ENCODER_OFFSET, 
-          false, 
-          false
+          true, 
+          true
         ), 
         new ModuleIONeo(
           BACKRIGHT_PIVOT,
           BACKRIGHT_DRIVE,
           BACKRIGHT_ABS_ENCODER,
           BACKRIGHT_ABS_ENCODER_OFFSET, 
-          false, 
+          true, 
           false
         )
       );
