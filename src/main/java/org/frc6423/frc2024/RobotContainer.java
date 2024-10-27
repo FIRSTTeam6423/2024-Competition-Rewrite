@@ -16,6 +16,8 @@ import static org.frc6423.frc2024.Constants.KDriveConstants.FRONTLEFT_ABS_ENCODE
 import static org.frc6423.frc2024.Constants.KDriveConstants.FRONTLEFT_ABS_ENCODER_OFFSET;
 import static org.frc6423.frc2024.Constants.KDriveConstants.FRONTLEFT_DRIVE;
 import static org.frc6423.frc2024.Constants.KDriveConstants.FRONTLEFT_PIVOT;
+import static org.frc6423.frc2024.Constants.KDriveConstants.FRONTRIGHT_ABS_ENCODER;
+import static org.frc6423.frc2024.Constants.KDriveConstants.FRONTRIGHT_ABS_ENCODER_OFFSET;
 import static org.frc6423.frc2024.Constants.KDriveConstants.FRONTRIGHT_DRIVE;
 import static org.frc6423.frc2024.Constants.KDriveConstants.FRONTRIGHT_PIVOT;
 
@@ -69,8 +71,8 @@ public class RobotContainer {
         new ModuleIONeo(
           FRONTRIGHT_PIVOT,
           FRONTRIGHT_DRIVE,
-          FRONTLEFT_ABS_ENCODER,
-          FRONTLEFT_ABS_ENCODER_OFFSET, 
+          FRONTRIGHT_ABS_ENCODER,
+          FRONTRIGHT_ABS_ENCODER_OFFSET, 
           false, 
           false
         ), 

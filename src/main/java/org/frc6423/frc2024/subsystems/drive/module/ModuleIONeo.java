@@ -61,6 +61,9 @@ public class ModuleIONeo implements ModuleIO {
         pivotMotor.restoreFactoryDefaults();
         driveMotor.restoreFactoryDefaults();
 
+        pivotMotor.setCANTimeout(250);
+        driveMotor.setCANTimeout(250);
+
         pivotRelativeEncoder = pivotMotor.getEncoder();
         driveRelativeEncoder = driveMotor.getEncoder();
 

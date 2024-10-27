@@ -15,26 +15,26 @@ public class Constants {
         public static final double kMaxAngularSpeed = kMaxLinearSpeed/kDriveBaseRadius;
 
         public static final double kDriveGearRatio = 6.11;
-        public static final double kPivotGearRatio = 1/1;
+        public static final double kPivotGearRatio = 18/1;
 
         public static final int kPivotMotorCurrentLimit = 30;
         public static final int kDriveMotorCurrentLimit = 50; // !
 
-        public static final double kPivotReduction = 6.5;
-        public static final double kDriveReduction = 150.0 / 7.0;
+        public static final double kPivotReduction = 18/1;
+        public static final double kDriveReduction = 6.11; //150.0 / 7.0;
 
-        public static final double kModulePivotP = 10.0;
+        public static final double kModulePivotP = 1;
         public static final double kModulePivotI = 0;
         public static final double kModulePivotD = 0;
 
-        public static final double kModuleDriveP = 0.1;
+        public static final double kModuleDriveP = 0;
         public static final double kModuleDriveI = 0;
         public static final double kModuleDriveD = 0;
 
-        public static final double kDriveS = 0.1849;
+        public static final double kDriveS = 0.02; //0.1849;
         /**volts per meter per second*/
-        public static final double kDriveV = 2.5108;
-        public static final double kDriveA = 0.24017;
+        public static final double kDriveV = 0.02; //2.5108;
+        public static final double kDriveA = 0.02; // 0.24017;
   
         public static final int FRONTLEFT_DRIVE = 1;
         public static final int FRONTLEFT_PIVOT = 2;

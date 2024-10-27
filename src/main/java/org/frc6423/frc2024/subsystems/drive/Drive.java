@@ -108,47 +108,47 @@ public class Drive extends SubsystemBase {
     public void periodic() {
 
         gyroIO.updateInputs(gyroInputs);
-        Logger.processInputs("Drive/Gyro", gyroInputs);
-        for (var module : modules) {
-        module.periodic();
-        }
+    Logger.processInputs("Drive/Gyro", gyroInputs);
+    for (var module : modules) {
+      module.periodic();
+    }
 
-        // Stop moving when disabled
-        if (DriverStation.isDisabled()) {
-        for (var module : modules) {
-            module.stop();
-        }
-        }
-        // Log empty setpoint states when disabled
-        if (DriverStation.isDisabled()) {
-        Logger.recordOutput("SwerveStates/Setpoints", new SwerveModuleState[] {});
-        Logger.recordOutput("SwerveStates/SetpointsOptimized", new SwerveModuleState[] {});
-        }
+    // Stop moving when disabled
+    if (DriverStation.isDisabled()) {
+      for (var module : modules) {
+        module.stop();
+      }
+    }
+    // Log empty setpoint states when disabled
+    if (DriverStation.isDisabled()) {
+      Logger.recordOutput("SwerveStates/Setpoints", new SwerveModuleState[] {});
+      Logger.recordOutput("SwerveStates/SetpointsOptimized", new SwerveModuleState[] {});
+    }
 
-        // Read wheel positions and deltas from each module
-        SwerveModulePosition[] modulePositions = getModulePositions();
-        SwerveModulePosition[] moduleDeltas = new SwerveModulePosition[4];
-        for (int moduleIndex = 0; moduleIndex < 4; moduleIndex++) {
-        moduleDeltas[moduleIndex] =
-            new SwerveModulePosition(
-                modulePositions[moduleIndex].distanceMeters
-                    - lastModulePositions[moduleIndex].distanceMeters,
-                modulePositions[moduleIndex].angle);
-        lastModulePositions[moduleIndex] = modulePositions[moduleIndex];
-        }
+    // Read wheel positions and deltas from each module
+    SwerveModulePosition[] modulePositions = getModulePositions();
+    SwerveModulePosition[] moduleDeltas = new SwerveModulePosition[4];
+    for (int moduleIndex = 0; moduleIndex < 4; moduleIndex++) {
+      moduleDeltas[moduleIndex] =
+          new SwerveModulePosition(
+              modulePositions[moduleIndex].distanceMeters
+                  - lastModulePositions[moduleIndex].distanceMeters,
+              modulePositions[moduleIndex].angle);
+      lastModulePositions[moduleIndex] = modulePositions[moduleIndex];
+    }
 
-        // Update gyro angle
-        if (gyroInputs.connected) {
-        // Use the real gyro angle
-        rawGyroRotation = gyroInputs.gyroYaw;
-        } else {
-        // Use the angle delta from the kinematics and module deltas
-        Twist2d twist = kinematics.toTwist2d(moduleDeltas);
-        rawGyroRotation = rawGyroRotation.plus(new Rotation2d(twist.dtheta));
-        }
+    // Update gyro angle
+    if (gyroInputs.connected) {
+      // Use the real gyro angle
+      rawGyroRotation = gyroInputs.gyroYaw;
+    } else {
+      // Use the angle delta from the kinematics and module deltas
+      Twist2d twist = kinematics.toTwist2d(moduleDeltas);
+      rawGyroRotation = rawGyroRotation.plus(new Rotation2d(twist.dtheta));
+    }
 
-        // Apply odometry update
-        poseEstimator.update(rawGyroRotation, modulePositions);
+    // Apply odometry update
+    poseEstimator.update(rawGyroRotation, modulePositions);
 
     }
 
