@@ -2,9 +2,37 @@ package org.frc6423.frc2024;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.RobotBase;
 
 public class Constants {
+
+    private static RobotType robotType = RobotType.SIMBOT;
+    
+    public static RobotType getRobotType() {
+        if (Robot.isReal() && robotType == robotType.SIMBOT) {
+            System.out.println("ERROR: invalid robot type");
+            return RobotType.COMPBOT;
+        } 
+        return robotType;
+    }
+
+    public static RobotMode getRobotMode() {
+        return switch (robotType) {
+            case DEVBOT, COMPBOT -> Robot.isReal() ? RobotMode.REAL : RobotMode.REPLAY;
+            case SIMBOT -> RobotMode.SIMULATED;
+        };
+    }
+
+    public static enum RobotMode {
+        REAL,
+        SIMULATED,
+        REPLAY
+    }
+
+    public static enum RobotType {
+        SIMBOT,
+        DEVBOT,
+        COMPBOT
+    }
 
     public static final class KDriveConstants {
         public static final double kDriveBaseWidth = Units.inchesToMeters(25.0); // ! Placeholder values
