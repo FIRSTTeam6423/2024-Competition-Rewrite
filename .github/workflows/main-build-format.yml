@@ -1,0 +1,26 @@
+name: Main Build
+run-name: ${{ github.actor }} is build testing
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]on: [push]
+jobs:
+  main-build-format:
+    runs-on: ubuntu-latest
+    container: wpilib/roborio-cross-ubuntu:2024-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      # Declares the repository safe and not under dubious ownership.
+      - name: Add repository to git safe directories
+        run: git config --global --add safe.directory $GITHUB_WORKSPACE
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Compile and run tests on robot code
+        run: ./gradlew build
+
+      - name: Spotless Check
+        run: ./gradlew spotlessCheck
