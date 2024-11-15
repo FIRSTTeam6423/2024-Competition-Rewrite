@@ -2,9 +2,9 @@ name: Main Build
 run-name: ${{ github.actor }} is build testing
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
-    branches: [ main ]on: [push]
+    branches: [ master ] on: [push]
 jobs:
   main-build-format:
     runs-on: ubuntu-latest
