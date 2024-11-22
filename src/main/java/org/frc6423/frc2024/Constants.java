@@ -35,6 +35,9 @@ public class Constants {
     }
 
     public static final class KDriveConstants {
+
+        public static final record ModuleConfig(int pivotMotorID, int driveMotorID, int pivotABSEncoderID) {}
+
         public static final double kDriveBaseWidth = Units.inchesToMeters(25.0); // ! Placeholder values
         public static final double kDriveBaseLength = Units.inchesToMeters(25.0);
         public static final double kDriveBaseRadius = Math.hypot(kDriveBaseWidth/2.0, kDriveBaseLength/2.0);
