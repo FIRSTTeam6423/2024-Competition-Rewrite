@@ -17,8 +17,8 @@ public class ModuleIONeo implements ModuleIO {
     private final CANSparkMax pivotMotor;
     private final CANSparkMax driveMotor;
 
-    private final RelativeEncoder pivotIncrementalEncoder;
     private final DutyCycleEncoder pivotABSEncoder;
+    private final RelativeEncoder pivotIncrementalEncoder;
     private final RelativeEncoder driveIncrementalEncoder;
 
     private final PIDController pivotFeedbackController;
