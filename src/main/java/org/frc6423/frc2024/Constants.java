@@ -28,6 +28,12 @@ public class Constants {
         REPLAY
     }
 
+    /**
+     ** ----- ROBOT TYPE -----
+     * DEVBOT - DriveBase with vision
+     * SIMBOT - Simulation Robot
+     * COMPBOT - Actual Robot
+     */
     public static enum RobotType {
         SIMBOT,
         DEVBOT,
@@ -38,21 +44,20 @@ public class Constants {
 
         public static final record ModuleConfig(int pivotMotorID, int driveMotorID, int pivotABSEncoderID) {}
 
-        public static final double kDriveBaseWidth = Units.inchesToMeters(25.0); // ! Placeholder values
+        // ! check in CAD
+        public static final double kDriveBaseWidth = Units.inchesToMeters(25.0);
         public static final double kDriveBaseLength = Units.inchesToMeters(25.0);
         public static final double kDriveBaseRadius = Math.hypot(kDriveBaseWidth/2.0, kDriveBaseLength/2.0);
 
-        public static final double kMaxLinearSpeed = Units.feetToMeters(10); // ! Adjust
+        public static final double kMaxLinearSpeed = Units.feetToMeters(10); 
         public static final double kMaxAngularSpeed = kMaxLinearSpeed/kDriveBaseRadius;
 
-        public static final double kDriveGearRatio = 6.11;
+        // ! check in CAD
         public static final double kPivotGearRatio = 18/1;
+        public static final double kDriveGearRatio = 6.11;
 
         public static final int kPivotMotorCurrentLimit = 30;
-        public static final int kDriveMotorCurrentLimit = 50; // !
-
-        public static final double kPivotReduction = 18/1;
-        public static final double kDriveReduction = 6.11; //150.0 / 7.0;
+        public static final int kDriveMotorCurrentLimit = 50;
 
         public static final double kModulePivotP = 1;
         public static final double kModulePivotI = 0;
@@ -67,24 +72,24 @@ public class Constants {
         public static final double kDriveV = 0.02; //2.5108;
         public static final double kDriveA = 0.02; // 0.24017;
   
-        public static final int FRONTLEFT_DRIVE = 1;
-        public static final int FRONTLEFT_PIVOT = 2;
-        public static final int FRONTRIGHT_DRIVE = 3;
-        public static final int FRONTRIGHT_PIVOT = 4;
-        public static final int BACKLEFT_DRIVE = 5;
-        public static final int BACKLEFT_PIVOT = 6;
-        public static final int BACKRIGHT_DRIVE = 7;
-        public static final int BACKRIGHT_PIVOT = 8;
+        public static final int kFLPivotID = 2;
+        public static final int kFLDriveID = 1;
+        public static final int kFRPivotID = 4;
+        public static final int kFRDriveID = 3;
+        public static final int kBLPivotID = 6;
+        public static final int kBLDriveID = 5;
+        public static final int kBRPivotID = 8;
+        public static final int kBRDriveID = 7;
         
-        public static final int FRONTLEFT_ABS_ENCODER = 0;
-        public static final int FRONTRIGHT_ABS_ENCODER = 1;
-        public static final int BACKLEFT_ABS_ENCODER = 2;
-        public static final int BACKRIGHT_ABS_ENCODER = 3;
+        public static final int kFLABS = 0;
+        public static final int kFRABS = 1;
+        public static final int kBLABS = 2;
+        public static final int kBRABS = 3;
 
-        public static final Rotation2d FRONTLEFT_ABS_ENCODER_OFFSET = Rotation2d.fromDegrees(317);
-        public static final Rotation2d FRONTRIGHT_ABS_ENCODER_OFFSET = Rotation2d.fromDegrees(246);
-        public static final Rotation2d BACKLEFT_ABS_ENCODER_OFFSET = Rotation2d.fromDegrees(236);
-        public static final Rotation2d BACKRIGHT_ABS_ENCODER_OFFSET = Rotation2d.fromDegrees(275);
+        public static final Rotation2d kFLABSOffset = Rotation2d.fromDegrees(317);
+        public static final Rotation2d kFRABSOffset = Rotation2d.fromDegrees(246);
+        public static final Rotation2d kBLABSOffset = Rotation2d.fromDegrees(236);
+        public static final Rotation2d kBRABSOffset = Rotation2d.fromDegrees(275);
 
     }
     

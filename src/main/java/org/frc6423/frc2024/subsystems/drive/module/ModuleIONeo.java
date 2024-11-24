@@ -33,18 +33,18 @@ public class ModuleIONeo implements ModuleIO {
         pivotIncrementalEncoder = pivotMotor.getEncoder();
         driveIncrementalEncoder = driveMotor.getEncoder();
 
-        pivotMotor.setSmartCurrentLimit(40);
-        driveMotor.setSmartCurrentLimit(30);
+        pivotMotor.setSmartCurrentLimit(kPivotMotorCurrentLimit);
+        driveMotor.setSmartCurrentLimit(kDriveMotorCurrentLimit);
 
         pivotFeedbackController = new PIDController(
-            0, 
-            0, 
-            0
+            kModulePivotP, 
+            kModulePivotI,
+            kModulePivotD
         );
         driveFeedbackController = new PIDController(
-            0, 
-            0, 
-            0
+            kModuleDriveP, 
+            kModuleDriveI, 
+            kModuleDriveD
         );
         pivotFeedbackController.enableContinuousInput(-Math.PI, Math.PI);
 
