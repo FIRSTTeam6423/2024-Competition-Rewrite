@@ -5,22 +5,23 @@ import static org.frc6423.frc2024.Constants.KDriveConstants.kPivotGearRatio;
 
 import org.frc6423.frc2024.Constants.KDriveConstants.*;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import edu.wpi.first.wpilibj.simulation.DutyCycleEncoderSim;
 
 public class ModuleIOSim implements ModuleIO {
 
     private final DCMotorSim pivotMotor;
     private final DCMotorSim driveMotor;
 
-    private final DutyCycleEncoderSim pivotABSEncoder;
-
     private final PIDController pivotFeedbackController;
     private final PIDController driveFeedbackController;
+
+    private double pivotAppliedVolts = 0.0;
+    private double driveAppliedVolts = 0.0;
 
     public ModuleIOSim(ModuleConfig config) {
 
@@ -35,8 +36,7 @@ public class ModuleIOSim implements ModuleIO {
             0.004
         );
 
-        pivotABSEncoder = new DutyCycleEncoderSim(config.pivotABSEncoderID());
-
+        
 
         pivotFeedbackController = new PIDController(
             0, 
@@ -54,13 +54,21 @@ public class ModuleIOSim implements ModuleIO {
     @Override
     public void updateInputs(ModuleIOInputs inputs) {
 
+        inputs.pivotMotorEnabled = true;
+        inputs.driveMotorEnabled = true;
 
+        inputs.pivotAbsolutePose = Rotation2d.fromRadians(pivotMotor.getAngularPositionRotations());
+        inputs.pivotPose = Rotation2d.fromRadians(pivotMotor.getAngularPositionRad());
+        inputs.pivotVelRadsPerSec = pivotMotor.getAngularVelocityRadPerSec();
+        inputs.pivotAppliedVolts = pivotAppliedVolts;
+        inputs.driveAppliedVolts = driveAppliedVolts;
 
     }
 
     @Override
     public void setPivotVoltage(double voltage) {
 
+        pivotAppliedVolts = MathUtil.clamp(voltage, -12, 12);
         pivotMotor.setInputVoltage(voltage);
 
     }
@@ -68,6 +76,7 @@ public class ModuleIOSim implements ModuleIO {
     @Override
     public void setDriveVoltage(double voltage) {
 
+        driveAppliedVolts = MathUtil.clamp(voltage, -12, 12);
         driveMotor.setInputVoltage(voltage);
 
     }
@@ -77,8 +86,8 @@ public class ModuleIOSim implements ModuleIO {
 
         setPivotVoltage(
             pivotFeedbackController.calculate(
-                pivotABSEncoder.getAbsolutePosition(),
-                angle.getRotations() // ! Check units
+                pivotMotor.getAngularPositionRotations(),
+                angle.getRotations()
             )
         );
 
