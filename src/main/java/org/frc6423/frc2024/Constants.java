@@ -1,45 +1,39 @@
 package org.frc6423.frc2024;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 
 public class Constants {
 
-    private static RobotType robotType = RobotType.SIMBOT;
+    private static RobotType robotType = RobotType.DEVBOT;
+
+    /**
+     ** ----- ROBOT TYPE -----
+     * DEVBOT - DriveBase with vision
+     * COMPBOT - Actual Robot
+     * SIMBOT - Simulated Robot
+     */
+    public static enum RobotType {
+        DEVBOT,
+        COMPBOT,
+        SIMBOT
+    }
     
-    public static RobotType getRobotType() {
-        if (Robot.isReal() && robotType == robotType.SIMBOT) {
-            System.out.println("ERROR: invalid robot type");
-            return RobotType.COMPBOT;
-        } 
-        return robotType;
-    }
-
-    public static RobotMode getRobotMode() {
-        return switch (robotType) {
-            case DEVBOT, COMPBOT -> Robot.isReal() ? RobotMode.REAL : RobotMode.REPLAY;
-            case SIMBOT -> RobotMode.SIMULATED;
-        };
-    }
-
     public static enum RobotMode {
         REAL,
         SIMULATED,
         REPLAY
     }
 
-    /**
-     ** ----- ROBOT TYPE -----
-     * DEVBOT - DriveBase with vision
-     * SIMBOT - Simulation Robot
-     * COMPBOT - Actual Robot
-     */
-    public static enum RobotType {
-        SIMBOT,
-        DEVBOT,
-        COMPBOT
+    public static RobotMode getRobotMode() {
+        return switch (robotType) {
+            case DEVBOT, COMPBOT -> Robot.isReal() ? RobotMode.REAL : RobotMode.REPLAY; 
+            case SIMBOT -> Robot.isReal() ? RobotMode.REAL : RobotMode.SIMULATED;
+        };
     }
 
+    
     public static final class KDriveConstants {
 
         public static final record ModuleConfig(int pivotMotorID, int driveMotorID, int pivotABSEncoderID) {}
@@ -72,6 +66,7 @@ public class Constants {
         public static final double kDriveV = 0.02; //2.5108;
         public static final double kDriveA = 0.02; // 0.24017;
   
+        // Motor and Encoder IDS for modules
         public static final int kFLPivotID = 2;
         public static final int kFLDriveID = 1;
         public static final int kFRPivotID = 4;
@@ -86,10 +81,18 @@ public class Constants {
         public static final int kBLABS = 2;
         public static final int kBRABS = 3;
 
+        // Absolute encoder offsets of the swerve modules
         public static final Rotation2d kFLABSOffset = Rotation2d.fromDegrees(317);
         public static final Rotation2d kFRABSOffset = Rotation2d.fromDegrees(246);
         public static final Rotation2d kBLABSOffset = Rotation2d.fromDegrees(236);
         public static final Rotation2d kBRABSOffset = Rotation2d.fromDegrees(275);
+
+        // ! Check CAD
+        // Location of the swerve modules relative to the center of the robot
+        public static final Translation2d kFLLocation = new Translation2d(0.381, 0.381);
+        public static final Translation2d kFRLocation = new Translation2d(0.381, -0.381);
+        public static final Translation2d kBLLocation = new Translation2d(-0.381, 0.381);
+        public static final Translation2d kBRLocation = new Translation2d(-0.381, -0.381);
 
     }
     
