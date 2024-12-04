@@ -60,6 +60,7 @@ public class Robot extends LoggedRobot {
       
       case SIMULATED:
         Logger.addDataReceiver(new RLOGServer());
+        Logger.addDataReceiver(new WPILOGWriter());
         break;
 
       case REPLAY:

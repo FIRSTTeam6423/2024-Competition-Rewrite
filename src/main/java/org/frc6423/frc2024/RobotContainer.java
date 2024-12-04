@@ -4,39 +4,62 @@
 
 package org.frc6423.frc2024;
 
-import org.littletonrobotics.junction.networktables.LoggedDashboardChooser;
+import static org.frc6423.frc2024.Constants.KDriveConstants.kSimConfig;
 
-import com.pathplanner.lib.auto.AutoBuilder;
+import org.frc6423.frc2024.commands.DriveCommands;
+import org.frc6423.frc2024.subsystems.drive.Drive;
 
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class RobotContainer {
-  
-  private PowerDistribution PDH = Robot.getPDH();
 
-  // * ------ SUBSYSTEMS ------
-  // * ------ COMMANDS ------
-  // * ------ AUTO ------
+  private final Drive m_Drive;
 
-  private final LoggedDashboardChooser<Command> autoChooser;
+  private final CommandXboxController controller = new CommandXboxController(0);
 
-  // * ------ Container ------
   public RobotContainer() {
 
-    if (Robot.isReal()) {} else {}
+    if (Robot.isReal()) {
 
-    autoChooser = new LoggedDashboardChooser<>("Auto Choices", AutoBuilder.buildAutoChooser());
+      m_Drive = new Drive(kSimConfig);
+
+    } else {
+
+      m_Drive = new Drive(kSimConfig);
+
+    }
 
     configureButtonBindings();
 
   }
 
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+
+    m_Drive.setDefaultCommand(DriveCommands.joystickDrive(
+      m_Drive, 
+      () -> -controller.getLeftY(), 
+      () -> -controller.getLeftX(), 
+      () -> -controller.getRightX()));
+    controller.x().onTrue(Commands.runOnce(m_Drive::stop, m_Drive));
+    // controller
+    //     .b()
+    //     .onTrue(
+    //         Commands.runOnce(
+    //                 () ->
+    //                     m_Drive.setPose(
+    //                         new Pose2d(drive.getPose().getTranslation(), new Rotation2d())),
+    //                 m_Drive)
+    //             .ignoringDisable(true));
+
+  }
 
   public Command getAutonomousCommand() {
 
-    return autoChooser.get();
+    return new Command() {
+      
+    };
     
   }
 

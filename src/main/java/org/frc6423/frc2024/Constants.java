@@ -6,7 +6,7 @@ import edu.wpi.first.math.util.Units;
 
 public class Constants {
 
-    private static RobotType robotType = RobotType.DEVBOT;
+    private static RobotType robotType = RobotType.SIMBOT;
 
     /**
      ** ----- ROBOT TYPE -----
@@ -36,7 +36,9 @@ public class Constants {
     
     public static final class KDriveConstants {
 
-        public static final record ModuleConfig(int pivotMotorID, int driveMotorID, int pivotABSEncoderID) {}
+        public static final record ModuleConfig(int id, int pivotMotorID, int driveMotorID, int pivotABSEncoderID, Rotation2d pivotABSOffset) {}
+
+        public static final double kWheelRadius = Units.inchesToMeters(4);
 
         // ! check in CAD
         public static final double kDriveBaseWidth = Units.inchesToMeters(25.0);
@@ -93,6 +95,13 @@ public class Constants {
         public static final Translation2d kFRLocation = new Translation2d(0.381, -0.381);
         public static final Translation2d kBLLocation = new Translation2d(-0.381, 0.381);
         public static final Translation2d kBRLocation = new Translation2d(-0.381, -0.381);
+
+        public static final ModuleConfig[] kSimConfig = {
+            new ModuleConfig(1, kFLPivotID, kFLDriveID, kFLABS, kFLABSOffset),
+            new ModuleConfig(2, kFRPivotID, kFRDriveID, kFRABS, kFRABSOffset),
+            new ModuleConfig(3, kBLPivotID, kBLDriveID, kBLABS, kBLABSOffset),
+            new ModuleConfig(4, kBRPivotID, kBRDriveID, kBRABS, kBRABSOffset)
+        };
 
     }
     
