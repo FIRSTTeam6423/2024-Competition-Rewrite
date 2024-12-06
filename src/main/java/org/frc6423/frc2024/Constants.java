@@ -33,6 +33,37 @@ public class Constants {
         };
     }
 
+    public static final class KIntakeConstants {
+
+        public static final int kPivotMotorID = 13;
+        public static final int kRollerMotorID = 14;
+        public static final int kIntakeLimitSwitchID = 9; // ! Add
+
+        public static final int kPivotABSEncoder = 5;
+        public static final Rotation2d kPivotABSOffset = Rotation2d.fromDegrees(0);
+
+        public static final double kG = 0.0; //0.58;//
+        public static final double kV = 0;//0.00765858;
+        public static final double kS = 0;//0.23125;
+        public static final double kA = 0;//0.00086773;
+
+        public static final double kP = 0.0;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+
+        public static final Rotation2d kPivotOutAngle = Rotation2d.fromDegrees(0);
+        public static final Rotation2d kPivotInAngle = Rotation2d.fromDegrees(0);
+        public static final Rotation2d kPivotSpitAngle = Rotation2d.fromDegrees(0);
+
+        public static final double kRollerFeedSpeed = 0.0;
+        public static final double kRollerFeedAmpSpeed = 0.0;
+        public static final double kRollerIntakeSpeed = 0.0;
+        public static final double kSuckBackSpeed = 0.0;
+
+        public static final double kPivotMaxVelDegPerSec = 0.0;
+        public static final double kPivotMaxAccelDegPerSecSqrd = 0.0;
+
+    }
     
     public static final class KDriveConstants {
 
